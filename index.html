@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100d1d">
+<title>CoinPilot — Painel de tarefas</title>
+<style>
+:root{color-scheme:dark;--bg:#0d0b16;--panel:#171426;--panel2:#211b35;--text:#f6f2ff;--muted:#aaa1c3;--purple:#a78bfa;--purple2:#7c3aed;--green:#6ee7b7;--amber:#fbbf24;--red:#fca5a5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#24183d 0%,var(--bg) 48%);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+main{max-width:760px;margin:auto;padding:22px 16px 44px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#c4b5fd,#7c3aed);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #7c3aed44}.eyebrow{color:var(--purple);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.title{font-size:25px;font-weight:850;letter-spacing:-.04em}.sub{color:var(--muted);font-size:13px}.pill{border:1px solid #473b66;background:#211b35;border-radius:999px;padding:7px 10px;color:#ddd2ff;font-size:12px;white-space:nowrap}
+.hero{background:linear-gradient(130deg,#30204c,#1a142b 75%);border:1px solid #49366c;border-radius:24px;padding:22px;margin-bottom:18px;position:relative;overflow:hidden}.hero:after{content:"✦";position:absolute;font-size:110px;right:10px;top:-24px;color:#c4b5fd15}.hero h1{font-size:26px;line-height:1.1;margin:8px 0}.hero p{color:#c7bedc;margin:8px 0 16px;max-width:480px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:#100d1d88;border:1px solid #ffffff12;border-radius:14px;padding:12px}.stat b{display:block;font-size:21px}.stat span{color:var(--muted);font-size:11px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:24px 2px 10px}.section-head h2{font-size:17px;margin:0}.section-head small{color:var(--muted)}
+.platform{background:#151222;border:1px solid #302744;border-radius:20px;padding:16px;margin-bottom:12px}.platform-head{display:flex;align-items:center;gap:11px;margin-bottom:14px}.platform-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:21px;background:#fff;color:#222}.shopee{background:#fb923c}.ali{background:#f3f4f6}.platform-head h3{margin:0;font-size:17px}.platform-head p{margin:2px 0 0;color:var(--muted);font-size:12px}.task{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #ffffff0e}.task b{font-size:14px}.task small{display:block;color:var(--muted);font-size:12px;margin-top:2px}.actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+button{border:0;border-radius:12px;padding:10px 12px;font:700 12px system-ui;cursor:pointer;transition:transform .12s,filter .12s}button:active{transform:scale(.97)}.primary{background:linear-gradient(135deg,#c4b5fd,#8b5cf6);color:#1a1030}.secondary{background:#2a223c;color:#e9ddff;border:1px solid #493b63}.success{background:#12372e;color:#a7f3d0;border:1px solid #23664f}.tiny{padding:8px 9px}
+.status{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:11px;color:var(--muted)}.dot{width:6px;height:6px;border-radius:50%;background:#9b91b7}.status.ok{color:var(--green)}.status.ok .dot{background:var(--green)}.status.pending{color:var(--amber)}.status.pending .dot{background:var(--amber)}
+.note{margin-top:16px;border:1px solid #6b5523;background:#292111;border-radius:15px;padding:13px;color:#fce7b2;font-size:12px}.note strong{display:block;margin-bottom:4px}.controls{display:flex;gap:8px;flex-wrap:wrap}.history{background:#151222;border:1px solid #302744;border-radius:18px;padding:14px}.history-row{padding:9px 0;border-bottom:1px solid #ffffff0e;font-size:12px;color:var(--muted)}.history-row:last-child{border:0}.history-row b{color:var(--text)}footer{text-align:center;color:#756b8f;font-size:11px;margin-top:25px}
+.toast{position:fixed;left:16px;right:16px;bottom:18px;margin:auto;max-width:500px;background:#28213a;border:1px solid #5a467e;border-radius:14px;padding:13px 16px;box-shadow:0 10px 40px #0008;display:none;z-index:10}.toast.show{display:block;animation:up .2s ease-out}@keyframes up{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+@media(max-width:480px){main{padding:16px 12px 35px}.title{font-size:22px}.hero{padding:18px}.hero h1{font-size:24px}.stats{gap:6px}.stat{padding:9px}.stat b{font-size:18px}.task{grid-template-columns:1fr}.actions{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div class="brand"><div class="logo">◈</div><div><div class="eyebrow">Seu painel de recompensas</div><div class="title">CoinPilot</div><div class="sub">Organize suas tarefas diárias</div></div></div>
+    <span class="pill">● Local</span>
+  </header>
+  <section class="hero">
+    <div class="eyebrow">Central de tarefas</div>
+    <h1>Pequenas tarefas.<br>Sem notificações falsas.</h1>
+    <p>Abra cada plataforma, faça a atividade e só confirme aqui depois de ver a recompensa recebida.</p>
+    <div class="stats">
+      <div class="stat"><b id="doneCount">0</b><span>confirmadas hoje</span></div>
+      <div class="stat"><b id="pendingCount">4</b><span>tarefas disponíveis</span></div>
+      <div class="stat"><b id="streakCount">0</b><span>registro de hoje</span></div>
+    </div>
+  </section>
+
+  <div class="section-head"><h2>Suas tarefas</h2><small id="dateLabel"></small></div>
+
+  <section class="platform">
+    <div class="platform-head"><div class="platform-icon shopee">🛍</div><div><h3>Shopee</h3><p>Abra o app e conclua a atividade por lá</p></div></div>
+    <div class="task"><div><b>Check-in diário</b><small>Verifique se as moedas foram adicionadas.</small><span class="status" id="status-shopee-checkin"><i class="dot"></i><span>Ainda não confirmado</span></span></div><div class="actions"><button class="secondary" onclick="openPlatform('shopee')">Abrir Shopee</button><button class="success tiny" onclick="confirmTask('shopee-checkin','Shopee — check-in')">Confirmar</button></div></div>
+    <div class="task"><div><b>Jogos e atividades</b><small>Confirme apenas após receber a recompensa.</small><span class="status" id="status-shopee-game"><i class="dot"></i><span>Ainda não confirmado</span></span></div><div class="actions"><button class="secondary" onclick="openPlatform('shopee')">Abrir Shopee</button><button class="success tiny" onclick="confirmTask('shopee-game','Shopee — jogos/atividades')">Confirmar</button></div></div>
+  </section>
+
+  <section class="platform">
+    <div class="platform-head"><div class="platform-icon ali">🛒</div><div><h3>AliExpress</h3><p>Abra o app e conclua a atividade por lá</p></div></div>
+    <div class="task"><div><b>Check-in diário</b><small>Confira a confirmação dentro do AliExpress.</small><span class="status" id="status-ali-checkin"><i class="dot"></i><span>Ainda não confirmado</span></span></div><div class="actions"><button class="secondary" onclick="openPlatform('ali')">Abrir AliExpress</button><button class="success tiny" onclick="confirmTask('ali-checkin','AliExpress — check-in')">Confirmar</button></div></div>
+    <div class="task"><div><b>Jogos e atividades</b><small>Confirme somente quando a recompensa aparecer.</small><span class="status" id="status-ali-game"><i class="dot"></i><span>Ainda não confirmado</span></span></div><div class="actions"><button class="secondary" onclick="openPlatform('ali')">Abrir AliExpress</button><button class="success tiny" onclick="confirmTask('ali-game','AliExpress — jogos/atividades')">Confirmar</button></div></div>
+  </section>
+
+  <div class="note"><strong>Importante — transparência</strong>Este site não lê a tela dos outros apps e não coleta moedas sozinho. O botão “Confirmar” registra sua confirmação manual; ele não verifica o servidor da plataforma. As notificações só são tentadas depois que você confirma uma tarefa aqui.</div>
+
+  <div class="section-head"><h2>Notificações</h2><small>Sem repetição no mesmo dia</small></div>
+  <div class="platform">
+    <p class="sub" style="margin-top:0">Permita notificações do navegador para receber um aviso após confirmar uma tarefa. Se não permitir, o site mostra um aviso na própria tela.</p>
+    <div class="controls"><button class="primary" onclick="enableNotifications()">Ativar notificações</button><button class="secondary" onclick="resetToday()">Reiniciar tarefas de hoje</button></div>
+  </div>
+  <div class="section-head"><h2>Histórico de hoje</h2><small>Salvo neste navegador</small></div>
+  <div class="history" id="history"><div class="history-row">Nenhuma tarefa confirmada hoje.</div></div>
+  <footer>CoinPilot · Painel auxiliar · Os registros ficam neste dispositivo.</footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const tasks=[
+ ['shopee-checkin','Shopee — check-in'],
+ ['shopee-game','Shopee — jogos/atividades'],
+ ['ali-checkin','AliExpress — check-in'],
+ ['ali-game','AliExpress — jogos/atividades']
+];
+const todayKey=()=>new Date().toLocaleDateString('sv-SE');
+const storeKey=()=>`coinpilot-${todayKey()}`;
+function read(){try{return JSON.parse(localStorage.getItem(storeKey())||'{}')}catch{return {}}}
+function save(s){localStorage.setItem(storeKey(),JSON.stringify(s))}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3500)}
+function render(){
+ const state=read();let done=0;let hist=[];
+ tasks.forEach(([id,name])=>{const row=state[id];const el=document.getElementById('status-'+id);if(row){done++;el.className='status ok';el.innerHTML='<i class="dot"></i><span>Confirmada às '+row.time+'</span>';hist.push({name,...row})}else{el.className='status';el.innerHTML='<i class="dot"></i><span>Ainda não confirmado</span>'}});
+ document.getElementById('doneCount').textContent=done;
+ document.getElementById('pendingCount').textContent=tasks.length-done;
+ document.getElementById('streakCount').textContent=done? '✓':'0';
+ document.getElementById('dateLabel').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+ const h=document.getElementById('history');
+ h.innerHTML=hist.length?hist.map(x=>`<div class="history-row"><b>${escapeHtml(x.name)}</b><br>Confirmada às ${x.time} · registro manual</div>`).join(''):'<div class="history-row">Nenhuma tarefa confirmada hoje.</div>';
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function confirmTask(id,name){
+ const state=read();if(state[id]){toast('Essa tarefa já foi registrada hoje. Não vou repetir o aviso.');return}
+ if(!confirm('Você já viu a recompensa aparecer dentro do aplicativo?\\n\\nSó confirme se a coleta realmente foi concluída.'))return;
+ const time=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+ state[id]={time,name};save(state);render();
+ const msg='CoinPilot: você confirmou '+name+'.';
+ if('Notification'in window && Notification.permission==='granted'){try{new Notification('CoinPilot',{body:msg,tag:storeKey()+'-'+id})}catch{toast(msg)}}else{toast(msg+' (aviso no site)')}
+}
+function openPlatform(which){
+ const urls=which==='shopee'?['shopee://','https://shopee.com.br/']:['aliexpress://','https://www.aliexpress.com/'];
+ toast('Tentando abrir a plataforma…');
+ window.location.href=urls[0];
+ setTimeout(()=>{if(document.visibilityState==='visible')window.open(urls[1],'_blank','noopener')},900);
+}
+async function enableNotifications(){
+ if(!('Notification'in window)){toast('Este navegador não oferece notificações neste contexto.');return}
+ try{const p=await Notification.requestPermission();toast(p==='granted'?'Notificações ativadas.':'Permissão não concedida; os avisos aparecerão no site.')}catch{toast('Não foi possível pedir permissão neste navegador.')}
+}
+function resetToday(){if(confirm('Apagar os registros de hoje neste navegador?')){localStorage.removeItem(storeKey());render();toast('Registros de hoje reiniciados.')} }
+render();
+</script>
+</body>
+</html>
